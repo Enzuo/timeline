@@ -37,10 +37,10 @@ fn main() {
   tauri::Builder::default()
     // .system_tray(tray)
     .menu(menu)
-    .setup(|app| {
-      // MY_APP = app;
-      Ok(())
-    })
+    // .setup(|app| {
+    //   // MY_APP = app;
+    //   Ok(())
+    // })
     .on_menu_event(|event| {
       match event.menu_item_id() {
         "quit" => {
