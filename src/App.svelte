@@ -9,9 +9,10 @@
 		['/Users/enzo/Desktop/Screenshot 2021-09-28 at 00.21.25.png', '20200805','22.270239714591266, 114.20608166675473'],
 	]
 	
-	let stepIndex = 0
+	let currentStep = 0
+	let stepsSeen = 0
 	let data_points_seen = [
-		data_points[stepIndex]
+		data_points[currentStep]
 	]
 
 
@@ -47,12 +48,15 @@
 
 	function forward(){
 		console.log('forward')
-		stepIndex += 1
-		data_points_seen = [...data_points_seen, data_points[stepIndex]]
+		currentStep += 1
+		if(currentStep > stepsSeen){
+			stepsSeen = currentStep
+			data_points_seen = [...data_points_seen, data_points[stepsSeen]]
+		}
 	}
 
 	function backward(){
-		stepIndex -= 1
+		currentStep -= 1
 	}
 
 </script>
@@ -61,7 +65,7 @@
 
 <main>
 	<h1>Hello {name}!</h1>
-	<Map data={data_points_seen} step={stepIndex}/>
+	<Map data={data_points_seen} step={currentStep}/>
 	<button on:click={handleOpen}>Open</button>
 	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
 </main>
