@@ -48,7 +48,7 @@
 
 	function forward(){
 		console.log('forward')
-		currentStep += 1
+		currentStep = Math.min(currentStep + 1,data_points.length - 1)
 		if(currentStep > stepsSeen){
 			stepsSeen = currentStep
 			data_points_seen = [...data_points_seen, data_points[stepsSeen]]
@@ -56,7 +56,7 @@
 	}
 
 	function backward(){
-		currentStep -= 1
+		currentStep = Math.max(currentStep - 1,0)
 	}
 
 </script>

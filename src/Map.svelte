@@ -64,6 +64,8 @@
     }
 
     function addMarkers(){
+        markerLayers.clearLayers()
+
         let markerLocations = data.map((d) => {
             return d[2].split(', ') // [51.508, -0.11] // d[2]
         })
