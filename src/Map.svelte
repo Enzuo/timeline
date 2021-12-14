@@ -30,15 +30,15 @@
 
         let initialView = [46.31, -0.99];
         let m = L.map(container, {preferCanvas: true }).setView(initialView, 5);
-        L.tileLayer(
-            'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-            {
-            attribution: `&copy;<a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>,
-                &copy;<a href="https://carto.com/attributions" target="_blank">CARTO</a>`,
+        // https://leaflet-extras.github.io/leaflet-providers/preview/
+        var tiles = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.{ext}', {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             subdomains: 'abcd',
-            maxZoom: 14,
-            }
-        ).addTo(m);
+            minZoom: 0,
+            maxZoom: 20,
+            ext: 'png'
+        });
+        tiles.addTo(m);
 
         return m;
     }
