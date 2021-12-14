@@ -1,5 +1,6 @@
 <script>
     import L from 'leaflet';
+    import {afterUpdate} from 'svelte'
 
     const iconRetinaUrl = 'assets/images/marker-icon-2x.png';
     const iconUrl = 'assets/images/marker-icon.png';
@@ -18,7 +19,8 @@
 
 
 
-	let map;
+	let map
+    let markerLayers
 
     export let data
     export let step
@@ -46,16 +48,9 @@
     }
 
     function mapAction(container) {
-        map = createMap(container); 
+        map = createMap(container)
+        markerLayers = L.layerGroup()
 
-		let markerLayers = L.layerGroup()
-        let markerLocations = data.map((d) => {
-            return d[2].split(', ') // [51.508, -0.11] // d[2]
-        })
- 		for(let location of markerLocations) {
- 			let marker = createMarker(location);
-			markerLayers.addLayer(marker);
- 		}
         markerLayers.addTo(map);
 
 
@@ -67,6 +62,24 @@
             }
         };
     }
+
+    function addMarkers(){
+        let markerLocations = data.map((d) => {
+            return d[2].split(', ') // [51.508, -0.11] // d[2]
+        })
+ 		for(let location of markerLocations) {
+ 			let marker = createMarker(location);
+			markerLayers.addLayer(marker);
+ 		}
+
+        // let panTo = 
+        map.panTo(markerLocations[step]);
+    }
+
+    afterUpdate(() => {
+        console.log("Updated");
+        addMarkers()
+    });
 
     function resizeMap() {
         if(map) { map.invalidateSize(); }
@@ -93,4 +106,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
    crossorigin=""/>
+
+   {data}
 <div class="map" style="height:300px;width:300px" use:mapAction />	
