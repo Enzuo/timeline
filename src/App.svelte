@@ -2,6 +2,15 @@
 	import { onMount } from 'svelte';
 	import Map from './Map.svelte';
 	import { emit, listen } from '@tauri-apps/api/event'
+
+	const data = [
+		['/Users/enzo/Desktop/screenshot.png', '20191001','46.29459015418106, -1.107509124775521'],
+		['/Users/enzo/Desktop/babysnail.png', '20200505','46.33396289931149, -0.9455455579936621'],
+		['/Users/enzo/Desktop/Screenshot 2021-09-28 at 00.21.25.png', '20200805','22.270239714591266, 114.20608166675473'],
+	]
+
+	let stepIndex = 0
+
 	listen('open', event => {
 		handleOpen()
 	})
@@ -20,7 +29,7 @@
 
 <main>
 	<h1>Hello {name}!</h1>
-	<Map/>
+	<Map data={data} step={stepIndex}/>
 	<button on:click={handleOpen}>Open</button>
 	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
 </main>

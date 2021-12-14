@@ -1,6 +1,28 @@
 <script>
     import L from 'leaflet';
+
+    const iconRetinaUrl = 'assets/images/marker-icon-2x.png';
+    const iconUrl = 'assets/images/marker-icon.png';
+    const shadowUrl = 'assets/images/marker-shadow.png';
+    const iconDefault = L.icon({
+        iconRetinaUrl,
+        iconUrl,
+        shadowUrl,
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41]
+    });
+    L.Marker.prototype.options.icon = iconDefault;
+
+
+
 	let map;
+
+    export let data
+    export let step
+
 
     function createMap(container) {
 
@@ -19,8 +41,24 @@
         return m;
     }
 
+    function createMarker(location){
+        return L.marker(location)
+    }
+
     function mapAction(container) {
         map = createMap(container); 
+
+		let markerLayers = L.layerGroup()
+        let markerLocations = data.map((d) => {
+            return d[2].split(', ') // [51.508, -0.11] // d[2]
+        })
+ 		for(let location of markerLocations) {
+ 			let marker = createMarker(location);
+			markerLayers.addLayer(marker);
+ 		}
+        markerLayers.addTo(map);
+
+
         return {
             destroy: () => {
                 // toolbar.remove();
