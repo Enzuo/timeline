@@ -20,9 +20,6 @@
 		handleOpen()
 	})
 
-
-	export let name;
-
 	async function handleOpen() {
 		let dialog = window.__TAURI__.dialog
 		console.log(dialog)
@@ -64,16 +61,15 @@
 <svelte:window on:keydown={handleKeydown}/>
 
 <main>
-	<h1>Hello {name}!</h1>
 	<div class="screen">
-		<div class="content">Photo</div>
+		<div class="content">
+			<button on:click={handleOpen}>Open</button>
+		</div>
 		<div class="map">
 			<Map data={data_points_seen} step={currentStep}/>
 		</div>
 		<div class="timeline"></div>
 	</div>
-	<button on:click={handleOpen}>Open</button>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
 </main>
 
 <style>
@@ -81,7 +77,7 @@
 		height:100%;
 		display: grid;
 		grid-template-rows: [first] auto [last] 50px;
-		grid-template-columns: [first] auto [last] 20%;
+		grid-template-columns: [first] auto [last] 40%;
 	}
 	.content{
 
@@ -99,10 +95,6 @@
 
 	main {
 		height:100%;
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
 	}
 
 	h1 {
