@@ -65,13 +65,40 @@
 
 <main>
 	<h1>Hello {name}!</h1>
-	<Map data={data_points_seen} step={currentStep}/>
+	<div class="screen">
+		<div class="content">Photo</div>
+		<div class="map">
+			<Map data={data_points_seen} step={currentStep}/>
+		</div>
+		<div class="timeline"></div>
+	</div>
 	<button on:click={handleOpen}>Open</button>
 	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
 </main>
 
 <style>
+	.screen {
+		height:100%;
+		display: grid;
+		grid-template-rows: [first] auto [last] 50px;
+		grid-template-columns: [first] auto [last] 20%;
+	}
+	.content{
+
+	}
+	.map{
+
+	}
+	.timeline{
+		grid-column-start: 1;
+		grid-column-end: span 2;
+		grid-row-start: 2;
+		grid-row-end: 2;
+	}
+
+
 	main {
+		height:100%;
 		text-align: center;
 		padding: 1em;
 		max-width: 240px;

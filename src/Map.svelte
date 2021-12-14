@@ -109,5 +109,4 @@
    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
    crossorigin=""/>
 
-   {data}
-<div class="map" style="height:300px;width:300px" use:mapAction />	
+<div class="map" style="height:100%;width:100%" use:mapAction />	
