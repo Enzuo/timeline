@@ -1,11 +1,12 @@
 <script>
 	import { onMount } from 'svelte';
 	import Map from './Map.svelte';
+	import Image from './Image.svelte';
 	import { emit, listen } from '@tauri-apps/api/event'
 
 	const data_points = [
 		['/Users/enzo/Desktop/screenshot.png', '20191001','46.29459015418106, -1.107509124775521'],
-		['/Users/enzo/Desktop/babysnail.png', '20200505','46.33396289931149, -0.9455455579936621'],
+		['/Users/enzo/Desktop/babysnail.jpg', '20200505','46.33396289931149, -0.9455455579936621'],
 		['/Users/enzo/Desktop/Screenshot 2021-09-28 at 00.21.25.png', '20200805','22.270239714591266, 114.20608166675473'],
 	]
 	
@@ -64,6 +65,7 @@
 	<div class="screen">
 		<div class="content">
 			<button on:click={handleOpen}>Open</button>
+			<Image path={data_points[currentStep][0]}></Image>
 		</div>
 		<div class="map">
 			<Map data={data_points_seen} step={currentStep}/>
