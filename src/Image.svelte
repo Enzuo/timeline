@@ -18,9 +18,27 @@
 
 </script>
 
+<style>
+    .center-image{
+        display: block;
+        height:100%;
+        width:100%;
+
+        background:black;
+        display:flex; align-items: center;
+    }
+    img {
+        display:block;
+        max-height: 100%;
+	    max-width: 100%;
+        margin: 0 auto;
+    }
+</style>
+
 
 {path}
 {#if imgData}
-<img style='display:block; width:300px;height:300px;' id='base64image'
-src='data:image/png;base64,{imgData}' />
+<div class="center-image">
+    <img id='base64image' src='data:image/png;base64,{imgData}' />
+</div>
 {/if}

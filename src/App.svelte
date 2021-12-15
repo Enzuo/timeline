@@ -82,7 +82,9 @@
 		grid-template-columns: [first] auto [last] 40%;
 	}
 	.content{
-
+		display:grid;
+		grid-row-start: 1;
+		grid-row-end: 1;
 	}
 	.map{
 
