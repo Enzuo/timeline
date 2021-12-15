@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import Map from './Map.svelte';
 	import Image from './Image.svelte';
+	import Timeline from './Timeline.svelte';
 	import { emit, listen } from '@tauri-apps/api/event'
 
 	const data_points = [
@@ -70,7 +71,9 @@
 		<div class="map">
 			<Map data={data_points_seen} step={currentStep}/>
 		</div>
-		<div class="timeline"></div>
+		<div class="timeline">
+			<Timeline time={data_points[currentStep][1]}></Timeline>
+		</div>
 	</div>
 </main>
 
@@ -99,6 +102,9 @@
 
 	main {
 		height:100%;
+
+		color:#fff;
+		background:#000;
 	}
 
 	h1 {
