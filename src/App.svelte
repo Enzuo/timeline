@@ -1,9 +1,10 @@
 <script>
 	import { onMount } from 'svelte';
+	import { emit, listen } from '@tauri-apps/api/event'
 	import Map from './Map.svelte';
 	import Image from './Image.svelte';
 	import Timeline from './Timeline.svelte';
-	import { emit, listen } from '@tauri-apps/api/event'
+	import {openFolder} from './processFiles'
 
 	const data_points = [
 		['/Users/enzo/Desktop/screenshot.png', '20191001','46.29459015418106, -1.107509124775521'],
@@ -24,9 +25,13 @@
 
 	async function handleOpen() {
 		let dialog = window.__TAURI__.dialog
-		console.log(dialog)
-		let file = await dialog.open()
-		console.log(file)
+		// console.log(dialog)
+		let folder = await dialog.open({
+			directory: true,
+		})
+		openFolder(folder)
+		// processFile
+		// console.log(file)
 	}
 
 	function handleKeydown(event) {

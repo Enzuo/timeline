@@ -16,7 +16,7 @@ use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
 
 
 fn main() {
-  let open = CustomMenuItem::new("open".to_string(), "Open");
+  let open = CustomMenuItem::new("open".to_string(), "Open Folder");
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
   let submenu = Submenu::new("File", Menu::new().add_item(open).add_item(quit));
   let menu = Menu::new()
