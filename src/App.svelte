@@ -6,11 +6,13 @@
 	import Timeline from './Timeline.svelte';
 	import {openFolder} from './processFiles'
 
-	const data_points = [
-		['/Users/enzo/Desktop/screenshot.png', '20191001','46.29459015418106, -1.107509124775521'],
-		['/Users/enzo/Desktop/babysnail.jpg', '20200505','46.33396289931149, -0.9455455579936621'],
-		['/Users/enzo/Desktop/Screenshot 2021-09-28 at 00.21.25.png', '20200805','22.270239714591266, 114.20608166675473'],
+	let data_points = [
+		{path : '/Users/enzo/Desktop/screenshot.png', date : '20191001', coord : [46.29459015418106, -1.107509124775521]}
 	]
+	// 	['/Users/enzo/Desktop/screenshot.png', '20191001','46.29459015418106, -1.107509124775521'],
+	// 	['/Users/enzo/Desktop/babysnail.jpg', '20200505','46.33396289931149, -0.9455455579936621'],
+	// 	['/Users/enzo/Desktop/Screenshot 2021-09-28 at 00.21.25.png', '20200805','22.270239714591266, 114.20608166675473'],
+	// ]
 	
 	let currentStep = 0
 	let stepsSeen = 0
@@ -29,7 +31,7 @@
 		let folder = await dialog.open({
 			directory: true,
 		})
-		openFolder(folder)
+		data_points = await openFolder(folder)
 		// processFile
 		// console.log(file)
 	}
@@ -68,18 +70,20 @@
 <svelte:window on:keydown={handleKeydown}/>
 
 <main>
+	{#if data_points.length}
 	<div class="screen">
 		<div class="content">
 			<button on:click={handleOpen}>Open</button>
-			<Image path={data_points[currentStep][0]}></Image>
+			<Image path={data_points[currentStep].path}></Image>
 		</div>
 		<div class="map">
 			<Map data={data_points_seen} step={currentStep}/>
 		</div>
 		<div class="timeline">
-			<Timeline time={data_points[currentStep][1]}></Timeline>
+			<Timeline time={data_points[currentStep].date}></Timeline>
 		</div>
 	</div>
+	{/if}
 </main>
 
 <style>

@@ -23,16 +23,24 @@ export async function openFolder(folderPath) {
             // let buffer = Buffer.Blob(binaryString, "binary");
             let uint = Uint8Array.from(binaryArray)
             console.log(uint)
-            return exifr.parse(uint)
+            return parseExif(d.path, uint)
         })
     })
 
-    console.log(filesExif)
+    // console.log(filesExif)
 
-    let coordinates = await Promise.all(filesExif)
-    
+    let files_data = await Promise.all(filesExif)
+
     
     
     // performance.measure('A to Now', 'A');
-    console.log(coordinates)
+    console.log(files_data)
+    return files_data
+}
+
+async function parseExif(filePath, fileData) {
+    // let uint = fileData
+    let fileExif = await exifr.parse(fileData)
+    let infos = {coord:[fileExif.latitude, fileExif.longitude], date: fileExif.CreateDate}
+    return {path:filePath, ...infos}
 }

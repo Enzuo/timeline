@@ -67,9 +67,10 @@
         markerLayers.clearLayers()
 
         let markerLocations = data.map((d) => {
-            return d[2].split(', ') // [51.508, -0.11] // d[2]
+            return d.coord // d[2].split(', ') // [51.508, -0.11] // d[2]
         })
  		for(let location of markerLocations) {
+            if(!location[0]) return
  			let marker = createMarker(location);
 			markerLayers.addLayer(marker);
  		}
