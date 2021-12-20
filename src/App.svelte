@@ -1,6 +1,9 @@
 <script>
 	import { onMount } from 'svelte';
 	import { emit, listen } from '@tauri-apps/api/event'
+	import { Diamonds } from 'svelte-loading-spinners'
+
+
 	import Map from './Map.svelte';
 	import Image from './Image.svelte';
 	import Timeline from './Timeline.svelte';
@@ -31,6 +34,7 @@
 		let folder = await dialog.open({
 			directory: true,
 		})
+		data_points = []
 		data_points = await openFolder(folder)
 		// processFile
 		// console.log(file)
@@ -70,10 +74,9 @@
 <svelte:window on:keydown={handleKeydown}/>
 
 <main>
-	{#if data_points.length}
 	<div class="screen">
+		{#if data_points && data_points.length}
 		<div class="content">
-			<button on:click={handleOpen}>Open</button>
 			<Image path={data_points[currentStep].path}></Image>
 		</div>
 		<div class="map">
@@ -82,8 +85,11 @@
 		<div class="timeline">
 			<Timeline time={data_points[currentStep].date}></Timeline>
 		</div>
+		{:else}
+		<Diamonds size="60" color="#FF3E00" unit="px" duration="1s"></Diamonds>
+		<button on:click={handleOpen}>Open</button>
+		{/if}
 	</div>
-	{/if}
 </main>
 
 <style>
@@ -114,13 +120,6 @@
 
 		color:#fff;
 		background:#000;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
 	}
 
 	@media (min-width: 640px) {
