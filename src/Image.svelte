@@ -1,19 +1,23 @@
 <script>
     import * as fs from '@tauri-apps/api/fs'
     import {base64ArrayBuffer} from './utils'
+    import { Square } from 'svelte-loading-spinners'
 
-    export let path
+    export let data
 
     let imgData
 
 
-    async function loadImage(path){
-        let imgDataBuffer = await fs.readBinaryFile(path)
-        return base64ArrayBuffer(imgDataBuffer)
-    }
+    // async function loadImage(path){
+    //     let imgDataBuffer = await fs.readBinaryFile(path)
+    //     return base64ArrayBuffer(imgDataBuffer)
+    // }
 
     $: {
-        loadImage(path).then((val) => {imgData = val})
+        imgData = null
+        if(data.dataPromise){
+            data.dataPromise.then((val) => {imgData = val})
+        }
     }
 
 </script>
@@ -25,7 +29,12 @@
         width:100%;
 
         background:black;
-        display:flex; align-items: center;
+        display:flex; 
+        align-items: center;
+        text-align: center;
+    }
+    .center{
+        margin: 0 auto;
     }
     img {
         display:block;
@@ -36,9 +45,13 @@
 </style>
 
 
-{path}
-{#if imgData}
+{data.path}
 <div class="center-image">
+    {#if imgData}
     <img id='base64image' src='data:image/png;base64,{imgData}' />
+    {:else}
+    <div class="center">
+        <Square></Square>
+    </div>
+    {/if}
 </div>
-{/if}

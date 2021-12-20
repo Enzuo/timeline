@@ -70,13 +70,15 @@
             return d.coord // d[2].split(', ') // [51.508, -0.11] // d[2]
         })
  		for(let location of markerLocations) {
-            if(!location[0]) return
+            if(!location[0]) continue
  			let marker = createMarker(location);
 			markerLayers.addLayer(marker);
  		}
 
         // let panTo = 
-        map.panTo(markerLocations[step]);
+        if(markerLocations[step][0]){
+            map.panTo(markerLocations[step]);
+        }
     }
 
     afterUpdate(() => {

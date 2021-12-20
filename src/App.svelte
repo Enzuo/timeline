@@ -7,7 +7,7 @@
 	import Map from './Map.svelte';
 	import Image from './Image.svelte';
 	import Timeline from './Timeline.svelte';
-	import {openFolder} from './processFiles'
+	import {loadImage, openFolder, saveExif} from './processFiles'
 
 	let data_points = [
 		{path : '/Users/enzo/Desktop/screenshot.png', date : '20191001', coord : [46.29459015418106, -1.107509124775521]}
@@ -28,16 +28,19 @@
 		handleOpen()
 	})
 
+	/**
+	 * Event handle
+	 */
 	async function handleOpen() {
 		let dialog = window.__TAURI__.dialog
 		// console.log(dialog)
 		let folder = await dialog.open({
 			directory: true,
 		})
+		
 		data_points = []
 		data_points = await openFolder(folder)
-		// processFile
-		// console.log(file)
+		reinit()
 	}
 
 	function handleKeydown(event) {
@@ -56,6 +59,15 @@
 		}
 	}
 
+	async function handleCoordChange(event){
+		let filePath = data_points[currentStep].path
+		let fileData = await data_points[currentStep].dataPromise
+		saveExif(filePath, fileData, {lattidue:1})
+	}
+
+	/**
+	 * Utils functions
+	*/
 	function forward(){
 		console.log('forward')
 		currentStep = Math.min(currentStep + 1,data_points.length - 1)
@@ -63,10 +75,26 @@
 			stepsSeen = currentStep
 			data_points_seen = [...data_points_seen, data_points[stepsSeen]]
 		}
+		preloadImages(data_points, currentStep)
 	}
 
 	function backward(){
 		currentStep = Math.max(currentStep - 1,0)
+	}
+
+	function reinit () {
+		currentStep = 0
+		stepsSeen = 0
+		data_points_seen = [
+			data_points[currentStep]
+		]
+		preloadImages(data_points, currentStep)
+	}
+
+	function preloadImages(datas, index){
+		if(!datas[index].dataPromise){
+			datas[index].dataPromise = loadImage(datas[index].path)
+		}
 	}
 
 </script>
@@ -77,13 +105,17 @@
 	<div class="screen">
 		{#if data_points && data_points.length}
 		<div class="content">
-			<Image path={data_points[currentStep].path}></Image>
+			<Image data={data_points[currentStep]}></Image>
 		</div>
 		<div class="map">
 			<Map data={data_points_seen} step={currentStep}/>
 		</div>
 		<div class="timeline">
 			<Timeline time={data_points[currentStep].date}></Timeline>
+		</div>
+		<div>
+			<input value={data_points[currentStep].coord}>
+			<button on:click={handleCoordChange}>Save coord</button>
 		</div>
 		{:else}
 		<Diamonds size="60" color="#FF3E00" unit="px" duration="1s"></Diamonds>

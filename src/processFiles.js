@@ -1,6 +1,8 @@
 import * as fs from '@tauri-apps/api/fs'
-import * as Buffer from 'buffer'
 import exifr from 'exifr'
+import piexif from 'piexifjs'
+
+import {base64ArrayBuffer} from './utils'
 // import { PerformanceObserver, performance } from 'perf_hooks'
 
 
@@ -43,4 +45,16 @@ async function parseExif(filePath, fileData) {
     let fileExif = await exifr.parse(fileData)
     let infos = {coord:[fileExif.latitude, fileExif.longitude], date: fileExif.CreateDate}
     return {path:filePath, ...infos}
+}
+
+
+export async function saveExif(filePath, fileData, exif){
+    let new_exif = piexif.load(fileData)
+    console.log('saveExif', new_exif)
+    piexif.insert(exif,fileData)
+}
+
+export async function loadImage(path){
+    let imgDataBuffer = await fs.readBinaryFile(path)
+    return base64ArrayBuffer(imgDataBuffer)
 }
