@@ -9,7 +9,16 @@ import {base64ArrayBuffer} from './utils'
 
 export async function openFolder(folderPath) {
     let dir = await fs.readDir(folderPath)
-    console.log(dir)
+    // console.log(dir)
+
+    let dataDescriptor = dir.find(a => a.name === 'data.json')
+    if(dataDescriptor){
+        let dataJsonPromise = fs.readTextFile(dataDescriptor.path)
+        let dataJson = await dataJsonPromise
+        console.log(dataJson)
+        return JSON.parse(dataJson)
+        // console.log(dataDes)
+    }
 
     // performance.mark('A');
     let files = dir.filter(d => {
@@ -36,8 +45,9 @@ export async function openFolder(folderPath) {
     
     
     // performance.measure('A to Now', 'A');
-    console.log(files_data)
-    return files_data
+    let sorted_files = files_data.sort((a, b) => a.date < b.date ? -1 : 1)
+    console.log(JSON.stringify(sorted_files))
+    return sorted_files
 }
 
 async function parseExif(filePath, fileData) {
@@ -49,9 +59,10 @@ async function parseExif(filePath, fileData) {
 
 
 export async function saveExif(filePath, fileData, exif){
-    let new_exif = piexif.load(fileData)
+    let base64data = 'data:image/jpeg;base64,'+fileData
+    let new_exif = piexif.load(base64data)
     console.log('saveExif', new_exif)
-    piexif.insert(exif,fileData)
+    // piexif.insert(exif,fileData)
 }
 
 export async function loadImage(path){
