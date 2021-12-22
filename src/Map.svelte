@@ -16,6 +16,16 @@
         shadowSize: [41, 41]
     });
     L.Marker.prototype.options.icon = iconDefault;
+    const redIcon = L.icon({
+        iconRetinaUrl: 'assets/marker-icon-red-2x.png',
+        iconUrl: 'assets/marker-icon-red.png',
+        shadowUrl,
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41]
+    });
 
 
 
@@ -43,7 +53,10 @@
         return m;
     }
 
-    function createMarker(location){
+    function createMarker(location, focus){
+        if(focus){
+            return L.marker(location, {icon: redIcon})
+        }
         return L.marker(location)
     }
 
@@ -69,11 +82,11 @@
         let markerLocations = data.map((d) => {
             return d.coord // d[2].split(', ') // [51.508, -0.11] // d[2]
         })
- 		for(let location of markerLocations) {
-            if(!location[0]) continue
- 			let marker = createMarker(location);
+        markerLocations.forEach((location, index) => {
+            if(!location[0]) return
+ 			let marker = createMarker(location, index === step );
 			markerLayers.addLayer(marker);
- 		}
+ 		})
 
         // let panTo = 
         if(markerLocations[step][0]){
