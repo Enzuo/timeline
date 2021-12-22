@@ -80,6 +80,9 @@
 
 	function backward(){
 		currentStep = Math.max(currentStep - 1,0)
+
+		preloadImage(datas,currentStep)
+		preloadImage(datas,currentStep-1)
 	}
 
 	function reinit () {
@@ -92,8 +95,20 @@
 	}
 
 	function preloadImages(datas, index){
-		if(!datas[index].dataPromise){
+		preloadImage(datas,index)
+		preloadImage(datas,index+1)
+		preloadImage(datas,index+2)
+		unloadImage(datas,index-3)
+	}
+
+	function preloadImage(datas, index){
+		if(datas[index] && !datas[index].dataPromise){
 			datas[index].dataPromise = loadImage(datas[index].path)
+		}
+	}
+	function unloadImage(datas,index){
+		if(datas[index] && datas[index].dataPromise){
+			datas[index].dataPromise = undefined
 		}
 	}
 
