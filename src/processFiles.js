@@ -2,40 +2,35 @@ import * as fs from '@tauri-apps/api/fs'
 import exifr from 'exifr'
 import piexif from 'piexifjs'
 
-import {base64ArrayBuffer} from './utils'
+// comment path & nodeFs to run with Tauri
+// import * as nodeFs from 'fs/promises'
+// import path from 'path'
+
+import {base64ArrayBuffer} from './utils.js'
 // import { PerformanceObserver, performance } from 'perf_hooks'
 
 
 
-export async function openFolder(folderPath) {
-    let dir = await fs.readDir(folderPath)
+export async function openFolder(folderPath, useNode) {
+    let dir = await (useNode ? nodeFs.readdir(folderPath, {withFileTypes:true}) : fs.readDir(folderPath))
     // console.log(dir)
 
     let dataDescriptor = dir.find(a => a.name === 'data.json')
-    if(dataDescriptor){
+    if(dataDescriptor && !useNode){
         let dataJsonPromise = fs.readTextFile(dataDescriptor.path)
         let dataJson = await dataJsonPromise
-        console.log(dataJson)
         return JSON.parse(dataJson)
-        // console.log(dataDes)
     }
 
     // performance.mark('A');
     let files = dir.filter(d => {
         if (d.children) return false
-        if (!d.path.match(/.*\.jpg|\.png/i)) return false
+        if (!d.name.match(/.*\.jpg|\.png/i)) return false
         return true
     })
     let filesExif = files.map(d => {
-
-
-        // d.path
-        return fs.readBinaryFile(d.path).then(binaryArray => {
-            // let buffer = Buffer.Blob(binaryString, "binary");
-            let uint = Uint8Array.from(binaryArray)
-            console.log(uint)
-            return parseExif(d.path, uint)
-        })
+        let filepath = d.path || path.join(folderPath, d.name)
+        return useNode ? getExifNode(filepath) : getExif(filepath)
     })
 
     // console.log(filesExif)
@@ -49,6 +44,45 @@ export async function openFolder(folderPath) {
     console.log(JSON.stringify(sorted_files))
     return sorted_files
 }
+
+
+
+/**
+ * Tauri
+ * 
+ */
+
+async function getExif(filePath){
+    return fs.readBinaryFile(filePath).then(binaryArray => {
+        let uint = Uint8Array.from(binaryArray)
+        return parseExif(filePath, uint)
+    })
+}
+
+export async function loadImage(path){
+    let imgDataBuffer = await fs.readBinaryFile(path)
+    return base64ArrayBuffer(imgDataBuffer)
+}
+
+/** 
+ * Node fs
+ * 
+ */
+
+
+async function getExifNode(filePath){
+    console.log(filePath)
+    let fd = await nodeFs.open(filePath, 'r')
+    let buf = Buffer.alloc(65000)
+    await fd.read(buf, 0, 65000)
+    fd.close()
+
+    // console.log(filePath, buf)
+    return parseExif(filePath, buf)
+}
+
+/** --- */
+
 
 async function parseExif(filePath, fileData) {
     // let uint = fileData
@@ -65,7 +99,3 @@ export async function saveExif(filePath, fileData, exif){
     // piexif.insert(exif,fileData)
 }
 
-export async function loadImage(path){
-    let imgDataBuffer = await fs.readBinaryFile(path)
-    return base64ArrayBuffer(imgDataBuffer)
-}
