@@ -126,11 +126,7 @@
 			<Map data={data_points_seen} step={currentStep}/>
 		</div>
 		<div class="timeline">
-			<Timeline time={data_points[currentStep].date}></Timeline>
-		</div>
-		<div>
-			<input value={data_points[currentStep].coord}>
-			<button on:click={handleCoordChange}>Save coord</button>
+			<Timeline data={data_points} step={currentStep}></Timeline>
 		</div>
 		{:else}
 		<Diamonds size="60" color="#FF3E00" unit="px" duration="1s"></Diamonds>
