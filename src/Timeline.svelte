@@ -28,6 +28,7 @@
 <style>
     .timeline-wrapper{
         padding:0 25px;
+        color: #aaa;
     }
     .timeline {
         width:100%;

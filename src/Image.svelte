@@ -45,7 +45,6 @@
 </style>
 
 
-{data.path}
 <div class="center-image">
     {#if imgData}
     <img id='base64image' src='data:image/png;base64,{imgData}' />

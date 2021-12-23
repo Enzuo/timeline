@@ -139,8 +139,8 @@
 	.screen {
 		height:100%;
 		display: grid;
-		grid-template-rows: [first] auto [last] 50px;
-		grid-template-columns: [first] auto [last] 40%;
+		grid-template-rows: 95% 5%;
+		grid-template-columns: [first] auto [last] 20%;
 	}
 	.content{
 		display:grid;
@@ -148,7 +148,8 @@
 		grid-row-end: 1;
 	}
 	.map{
-
+		grid-row-start: 1;
+		grid-row-end: 1;
 	}
 	.timeline{
 		grid-column-start: 1;
