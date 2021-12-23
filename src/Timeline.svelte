@@ -16,8 +16,8 @@
 
 <div class="timeline-wrapper">
     <div class="timeline">
-        {#each datesPos as date}
-        <div class="point" style="left:{date*100}%"></div>
+        {#each datesPos as date, i}
+        <div class="point {step === i ? 'focus' : ''}" style="left:{date*100}%"></div>
         {/each}
     </div>
     <div class="date">
@@ -41,5 +41,8 @@
         height:5px;
         background:rgba(24, 155, 255, 0.4);
         position:absolute;
+    }
+    .point.focus {
+        background:rgba(255, 24, 78, 1)    
     }
 </style>
