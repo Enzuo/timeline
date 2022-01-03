@@ -98,6 +98,8 @@
 		preloadImage(datas,index)
 		preloadImage(datas,index+1)
 		preloadImage(datas,index+2)
+		preloadImage(datas,index+3)
+		preloadImage(datas,index+4)
 		unloadImage(datas,index-3)
 	}
 
