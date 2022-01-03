@@ -55,7 +55,7 @@
 
     function createMarker(location, focus){
         if(focus){
-            return L.marker(location, {icon: redIcon})
+            return L.marker(location, {icon: redIcon, forceZIndex:10})
         }
         return L.marker(location)
     }

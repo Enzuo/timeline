@@ -44,6 +44,7 @@
         position:absolute;
     }
     .point.focus {
-        background:rgba(255, 24, 78, 1)    
+        background:rgba(255, 24, 78, 1);
+        z-index:10;   
     }
 </style>
